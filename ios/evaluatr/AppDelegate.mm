@@ -1,49 +1,79 @@
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
-#import <React/RCTI18nUtil.h>
+// #import <GoogleMaps/GoogleMaps.h>
+// #import <Firebase.h>
+// #import <ReactNativeMoEngage/MOReactInitializer.h>
+#import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
-#import <AppCenterReactNative.h>
-#import <AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeCrashes.h>
-#import "RNSplashScreen.h" 
-//#import <GoogleMaps/GoogleMaps.h>
+#import <React/RCTRootView.h>
+#import <React/RCTI18nUtil.h>
 #import <React/RCTLinkingManager.h>
+#import "RNSplashScreen.h"
+#import <React/RCTAppSetupUtils.h>
+// #import <CodePush/CodePush.h>
+// #import "GoogleMaps/GoogleMaps.h"
+#if RCT_NEW_ARCH_ENABLED
+#import <React/CoreModulesPlugins.h>
+#import <React/RCTCxxBridgeDelegate.h>
+#import <React/RCTFabricSurfaceHostingProxyRootView.h>
+#import <React/RCTSurfacePresenter.h>
+#import <React/RCTSurfacePresenterBridgeAdapter.h>
+#import <ReactCommon/RCTTurboModuleManager.h>
+
+#import <react/config/ReactNativeConfig.h>
+
+@interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
+  RCTTurboModuleManager *_turboModuleManager;
+  RCTSurfacePresenterBridgeAdapter *_bridgeAdapter;
+  std::shared_ptr<const facebook::react::ReactNativeConfig> _reactNativeConfig;
+  facebook::react::ContextContainer::Shared _contextContainer;
+}
+@end
+#endif
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  self.moduleName = @"AneyDelivery";
+  [GMSServices provideAPIKey:@"AIzaSyDtvggMnDy43f8BfFs326rwxqXMyjsl900"];
   [[RCTI18nUtil sharedInstance] allowRTL:YES];
-//  [GMSServices provideAPIKey:@"AIzaSyBTE07zMxwZ-d3lkF5z2i7ctDVnjZypJ8g"];
+  // Set Data Center
+  // [MoEngage setDataCenter:DATA_CENTER_03]; //DATA_CENTER_01, DATA_CENTER_02, OR DATA_CENTER_03
   
-  // You can add your custom initial props in the dictionary below.
-  // They will be passed down to the ViewController used by React Native.
-  self.initialProps = @{};
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
-  
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
-}
+  // [[MOReactInitializer sharedInstance] intializeSDKWithLaunchOptions:launchOptions];
+  //
+  // [FIRApp configure];
+  RCTAppSetupPrepareApp(application);
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{
-#if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
-#else
-  return [[NSBundle mainBundle];
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+
+#if RCT_NEW_ARCH_ENABLED
+  _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
+  _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
+  _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
+  _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
+  bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
-}
 
-/// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
-///
-/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
-/// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
-/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
-- (BOOL)concurrentRootEnabled
-{
-  return true;
+  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"evaluatr", nil);
+
+  if (@available(iOS 13.0, *)) {
+    rootView.backgroundColor = [UIColor systemBackgroundColor];
+  } else {
+    rootView.backgroundColor = [UIColor whiteColor];
+  }
+
+  NSString *yourAppToken = @"{h7urawrp6akg}";
+  NSString *environment = ADJEnvironmentProduction;
+  ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment allowSuppressLogLevel:YES];
+  [Adjust appDidLaunch:adjustConfig];
+
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  [RNSplashScreen show];
+  return YES;
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -52,5 +82,61 @@
 {
   return [RCTLinkingManager application:application openURL:url options:options];
 }
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+ restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
+}
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+#else
+  return [CodePush bundleURL];
+#endif
+}
+
+#if RCT_NEW_ARCH_ENABLED
+
+#pragma mark - RCTCxxBridgeDelegate
+
+- (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge
+{
+  _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
+                                                             delegate:self
+                                                            jsInvoker:bridge.jsCallInvoker];
+  return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
+}
+
+#pragma mark RCTTurboModuleManagerDelegate
+
+- (Class)getModuleClassFromName:(const char *)name
+{
+  return RCTCoreModulesClassProvider(name);
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
+                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
+{
+  return nullptr;
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
+                                                     initParams:
+                                                         (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+  return nullptr;
+}
+
+- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
+{
+  return RCTAppSetupDefaultModuleFromClass(moduleClass);
+}
+
+#endif
 
 @end

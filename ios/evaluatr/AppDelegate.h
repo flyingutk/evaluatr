@@ -1,6 +1,8 @@
-#import <RCTAppDelegate.h>
+#import <React/RCTBridgeDelegate.h>
 #import <UIKit/UIKit.h>
+#import <Adjust/Adjust.h>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 
-@interface AppDelegate : RCTAppDelegate
+@property (nonatomic, strong) UIWindow *window;
 
 @end
