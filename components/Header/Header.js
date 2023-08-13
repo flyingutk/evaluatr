@@ -23,8 +23,8 @@ const HeaderBrand = () => {
     let {selectedLanguage} = useContext(RootContext);
     return (
             <Image style={headerBrandStyles.container} source={selectedLanguage === "ar-SA" ? 
-                                    require('../../assets/evaluatrlogoGreen.png') : 
-                                    require('../../assets/evaluatrlogoGreen.png')  }>            
+                                    require('../../assets/adaptive-icon.png') : 
+                                    require('../../assets/adaptive-icon.png')  }>            
             </Image>
     )
 }

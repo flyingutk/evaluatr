@@ -59,7 +59,6 @@ export function Welcome({navigation,route} ) {
                     </View>
        </TouchableOpacity>
                 <View style ={{flex:1,justifyContent:"center",alignItems:"center"}}>
-      <Image style = {{width: 75, height: 26}}source={require("../assets/evaluatrlogoGreen.png")} /> 
       </View>
        </View>
        <View style ={{alignSelf:"center",marginTop:30}}>
@@ -73,7 +72,6 @@ export function Welcome({navigation,route} ) {
            </View>
            <View style={{marginLeft:90}}>
          
-         <Image source={require("../assets/evaluatrlogo.png")} />
            </View>
            <View style={styles.submit}>
          <TouchableOpacity

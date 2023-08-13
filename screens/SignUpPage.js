@@ -209,7 +209,6 @@ const UserInfo = ({navigation,route}) => {
     {!(Confirm == Password || Confirm =="") && <Text style={{ color:"#F9774D" ,fontSize: 14,alignSelf:"center",textAlign:"center" }}>{t('confirmErr')}</Text>}
      
       <View style={{zIndex:-1,height:screenHeight*0.35,alignSelf:"flex-end"}}>
-      <Image style={{zIndex:-1,height:screenHeight*0.53,width:screenWidth*0.9,marginTop:-70}} source={require("../assets/evaluatrlogo.png")} />
     </View>
        
        {showLoader ? <View style={styles.loaderView}><Loader /></View>: 

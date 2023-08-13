@@ -172,7 +172,6 @@ const ThankYou = ({ navigation, orderResponse, route }) => {
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
              <View style={{ alignSelf: 'center' }}>
-                <SimpleImage style = {{ width: 75, height: 26}}sourceData={require("../assets/evaluatrlogoGreen.png")} /> 
             </View>
             <ScrollView style={{flex: 0.91, marginTop: 50}}>
                 <ListHeader />

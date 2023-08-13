@@ -27,12 +27,6 @@ export function Signup({ navigation }) {
           <Text style={{color:"#FFFFFF",fontFamily:Fonts.POPPINS_REGULAR,fontSize:16, textAlign: 'right'}}>{t(`language`)}</Text>
         </TouchableOpacity>
         
-        <View style={styles.evaluatrtext} >
-          <Image source={require("../assets/Frame.png")} />
-        </View>
-        <View style = {styles.maintext}>
-          <Text style ={styles.empowerText}>{t(`empowerText`)}</Text>
-        </View>
         <View style = {styles.submittext}>
         
          <TouchableOpacity

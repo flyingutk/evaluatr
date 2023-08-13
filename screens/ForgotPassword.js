@@ -77,7 +77,6 @@ const ResetPass = ({navigation}) => {
                     </View>
        </TouchableOpacity>
                 <View style ={{flex:1,justifyContent:"center",alignItems:"center"}}>
-      <Image style = {{width: 75, height: 26}}source={require("../assets/evaluatrlogoGreen.png")} /> 
       </View>
        </View>
        <View style={styles.signin}>

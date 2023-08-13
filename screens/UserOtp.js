@@ -68,7 +68,6 @@ const MobileNum = ({navigation}) => {
                     </View>
        </TouchableOpacity>
                 <View style ={{flex:1,justifyContent:"center",alignItems:"center"}}>
-      <Image style = {{width: 75, height: 26}}source={require("../assets/evaluatrlogoGreen.png")} /> 
       </View>
        </View>
        <View style={styles.signin}>
@@ -111,7 +110,7 @@ const MobileNum = ({navigation}) => {
      {/* email option hidden for some time */}
        </View>
        <View style={{height:screenHeight*0.36,alignSelf:"flex-end"}}>
-      <Image style={{zIndex:-1,height:screenHeight*0.5,marginTop:30,width:screenWidth*0.9}} source={require("../assets/evaluatrlogo.png")} />
+      {/* <Image style={{zIndex:-1,height:screenHeight*0.5,marginTop:30,width:screenWidth*0.9}} source={require("../assets/evaluatrlogo.png")} /> */}
     </View>
          {showLoader ? <View style={styles.loaderView}><Loader /></View>: 
        <View>

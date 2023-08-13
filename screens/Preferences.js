@@ -93,7 +93,6 @@ export function Preferences({ navigation }) {
             <List.Item right={() => {return currency === "iqd" && <List.Icon icon={"check"} /> }} style={styles.listItem} title={t(`iqd`)} onPress={() => setCurrency("iqd")}/>
           </List.Section> */}
           <View style={{zIndex:-1,position:"absolute",bottom:0,alignSelf:"flex-end"}}>
-             <Image source={require("../assets/evaluatrlogo.png")} />
             </View>
           <View style={styles.stickyView}
             onPress={storePreferences}

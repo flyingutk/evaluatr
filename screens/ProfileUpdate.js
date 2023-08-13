@@ -148,7 +148,6 @@ else{
        </View>
 }
        <View style={{marginTop:-350,marginLeft:90}}>
-         <Image source={require("../assets/evaluatrlogo.png")} style={{zIndex:-1}} />
            </View>
            <View style={{marginLeft:30,marginRight:30}}>
            <Modal
