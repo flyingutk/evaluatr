@@ -3,10 +3,10 @@ import { httpClient } from "./base.service";
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// export function SignInfo(data) {
-//     return httpClient.post(`/v1/signup/customer`, data)
+export function SignInfo(data) {
+    return httpClient.post(`/register`, data)
     
-//   }
+  }
 // export function getAuthOtp(data) {
   
 //     return httpClient.post(`/v1/signup/send-otp`, data,{

@@ -6,6 +6,7 @@ import { Fonts, Sizes } from '../utils/Constants';
 import EmailLogin from './UserLogin';
 import { useTranslation } from 'react-i18next';
 import Preferences from './Preferences';
+import {SignupInfo} from "./SignUpPage";
 const Stack = createNativeStackNavigator();
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -38,13 +39,13 @@ export function Signup({ navigation }) {
            style={styles.buttonex}
            onPress={() => navigation.navigate('User Login')}
          >
-           <Text style={styles.buttonTextex}> {t(`loginEmailPass`)}</Text>
+           <Text style={styles.buttonTextex}> {t(`loginUsername`)}</Text>
          </TouchableOpacity>
          <TouchableOpacity
            style={styles.button}
-           onPress={() => navigation.navigate('Mobileotp',{whichtype : "phone"})}
+           onPress={() => navigation.navigate('SignupInfo')}
          >
-           <Text style={styles.buttonText}>{t(`loginMobile`)}</Text>
+           <Text style={styles.buttonText}>{t(`signUp`)}</Text>
          </TouchableOpacity>
          {/* <TouchableOpacity
          
@@ -88,6 +89,7 @@ export function Signup({ navigation }) {
       />
       <Stack.Screen name="language" component={Preferences}  options={{ headerShown: true }}/>
       <Stack.Screen name="Mobileotp" component={Mobileotp} options={{ headerShown: false }} />
+      <Stack.Screen name="SignupInfo" component={SignupInfo}/>
       <Stack.Screen name="User Login" component={EmailLogin} options={{ headerShown: false }} />
     </Stack.Navigator>
   );

@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import RNRestart from 'react-native-restart';
 // import { getRefreshedToken } from "./signup.service";
 const axiosInstance = axios.create({
-    baseURL: "https://5803-2409-40e3-1008-a430-b942-9d2-5ebf-978e.ngrok-free.app",
+    baseURL: "https://a2f8-2409-40e3-a-37d8-7dff-ed3a-4b12-4793.ngrok-free.app",
     timeout: 10000,
     headers: {
       'Accept': 'application/json',

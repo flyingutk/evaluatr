@@ -30,8 +30,8 @@ export function EmailLogin({navigation,route} ) {
   const UserEmail = ({navigation}) => {
     let passreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=])/
     const { t } = useTranslation('UserLogin');
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
+    const [email, setEmail] = useState('admin');
+    const [pass, setPass] = useState('admin');
     const [showLoader, setShowLoader] = useState(false);
     const TokenStore = async (val) => {
       await AsyncStorage.setItem("TOKEN",val)
@@ -111,17 +111,6 @@ export function EmailLogin({navigation,route} ) {
           caretHidden={false}
           //setting limit of input
         />
-        {/* <PhoneInput
-        containerStyle={styles.phoneContainer}
-        defaultCode="SA"
-        placeholder={t(`enterEmail`)}
-        textContainerStyle={{backgroundColor:"#FFFFFF",borderRadius:8}}
-        onChangeFormattedText={(newText) => {
-        setEmail(newText)}}
-        defaultValue={email}
-        textInputStyle={styles.inputStyle}
-        textInputProps={{ returnKeyType : "done" }}
-      /> */}
         
         <TextInput
           style={styles.hello}
@@ -132,9 +121,9 @@ export function EmailLogin({navigation,route} ) {
           defaultValue={pass}  
           placeholder={t(`enterPass`)}  
           caretHidden={true}
-          onSubmitEditing={(e)=>{
-            handleSubmit();
-       }}
+      //     onSubmitEditing={(e)=>{
+      //       handleSubmit();
+      //  }}
           //setting limit of input
         />  
         {  pass =="" || passreg.test(pass) === false  && <Text style={{ color: "#F9774D" ,fontSize: 12 }}>{t('passErr')}</Text>}
@@ -151,16 +140,32 @@ export function EmailLogin({navigation,route} ) {
       <View style={styles.submit}>
         {email === "" || pass === ""?
         <TouchableOpacity
-        style={styles.buttonsilver}
+        style={styles.buttonsilverstudent}
         
       >
-      <Text style={styles.silverButtonText}>{t(`logIn`)}</Text>
+      <Text style={styles.silverButtonText}>{t(`logInAsStudent`)}</Text>
       </TouchableOpacity>:<TouchableOpacity
-          style={styles.button}
+          style={styles.buttonstudent}
           onPress={handleSubmit}
         >
           
-          <Text style={styles.buttonText}>{t(`logIn`)}</Text>
+          <Text style={styles.buttonText}>{t(`logInAsStudent`)}</Text>
+        </TouchableOpacity>}
+      </View>}
+      {showLoader ? <View style={styles.loaderView}><Loader /></View>: 
+      <View style={styles.submit}>
+        {email === "" || pass === ""?
+        <TouchableOpacity
+        style={styles.buttonsilverteacher}
+        
+      >
+      <Text style={styles.silverButtonText}>{t(`logInAsTeacher`)}</Text>
+      </TouchableOpacity>:<TouchableOpacity
+          style={styles.buttonteacher}
+          onPress={handleSubmit}
+        >
+          
+          <Text style={styles.buttonText}>{t(`logInAsTeacher`)}</Text>
         </TouchableOpacity>}
       </View>}
     </View>
@@ -245,7 +250,7 @@ borderWidth : 1,
 borderRadius: Sizes.Size_8,
 marginBottom: Sizes.Size_18
 },
- button: {
+ buttonstudent: {
    marginLeft: Sizes.Size_24,
    height: screenHeight*0.07,
    width: screenWidth*0.87,
@@ -253,9 +258,19 @@ marginBottom: Sizes.Size_18
    alignItems: "center",
    backgroundColor: "#028E46",
    borderRadius: Sizes.Size_8,
-   bottom: Platform.OS === 'android'?30:70
+   bottom: Platform.OS === 'android'?90:120
  },
- buttonsilver: {
+ buttonteacher: {
+  marginLeft: Sizes.Size_24,
+  height: screenHeight*0.07,
+  width: screenWidth*0.87,
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#028E46",
+  borderRadius: Sizes.Size_8,
+  bottom: Platform.OS === 'android'?80:110
+},
+ buttonsilverstudent: {
   marginLeft: Sizes.Size_24,
   height: screenHeight*0.07,
   width: screenWidth*0.87,
@@ -263,7 +278,17 @@ marginBottom: Sizes.Size_18
   alignItems: "center",
   backgroundColor: "#D3DCEC",
   borderRadius: Sizes.Size_8,
-  bottom: Platform.OS === 'android'?20:50
+  bottom: Platform.OS === 'android'?80:110
+},
+buttonsilverteacher: {
+  marginLeft: Sizes.Size_24,
+  height: screenHeight*0.07,
+  width: screenWidth*0.87,
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#D3DCEC",
+  borderRadius: Sizes.Size_8,
+  bottom: Platform.OS === 'android'?70:100
 },
  input: {
   height: 40,

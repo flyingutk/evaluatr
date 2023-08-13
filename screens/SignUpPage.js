@@ -9,17 +9,16 @@ import {
  TextInput,
  Image,
  Dimensions,
- I18nManager
+ I18nManager,
+ ScrollView
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Loader } from "../components/Loader";
 import { SignInfo } from "../src/services/api/signup.service";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import UserLoc from "./UserLocation";
 import { useTranslation } from 'react-i18next';
 import { Fonts ,Colors, Sizes} from "../utils/Constants";
-
+import BottomNavigation from "../components/BottomNavigator";
 import { getAuthToken } from "../src/services/api/signup.service";
 import { RootContext } from "../RootContext";
 const screenHeight = Dimensions.get('window').height;
@@ -61,42 +60,21 @@ const UserInfo = ({navigation,route}) => {
   } 
     async function Userinfo(){
       setShowLoader(true);
-      SignInfo((data = {
-        data:{
-          type: "customers",
-          attributes: {
-              firstName: Fname,
-              lastName: Lname,
-              gender: "Male",
-              salutation: "Mr",
-              email: Email,
-              password: Password,
-              confirmPassword: Confirm,
-              acceptedTerms: true,
-              phone:Phone
-            }
-      }}))
-      
-    .then(async (response)=>{
-      if(response.status == 201){
-      await AsyncStorage.setItem("MOBILENO",Phone)
-      await AsyncStorage.setItem("REFID",response?.data?.data?.id)
-      getAuthToken(data={
-        data: {
-          attributes: {
-              password: Password,
-              username: Phone
-          },
-          type: "access-tokens-v2"
+      let signupData = {
+        password: Password,
+        username: Fname
       }
-      }).then(async (response) => {
-        if(response?.status === 201){
-          await AsyncStorage.setItem("FNAME",Fname)
-          await AsyncStorage.setItem("LNAME",Lname)
-          TokenStore(response?.data?.data?.attributes?.accessToken);   
-          RefTokenStore(response?.data?.data?.attributes?.refreshToken);  
+      SignInfo(signupData).then(async (response)=>{
+      if(response.status == 201){
+      let loginData = {
+        password: Password,
+        username: Fname
+      }
+      getAuthToken(loginData).then(async (response) => {
+        if(response?.status === 200){
+          TokenStore(response?.data?.token);   
           setShowLoader(false);
-          navigation.navigate("user location")
+          navigation.navigate("navbar")
         }
     }
     ) .catch((err) => {
@@ -144,7 +122,7 @@ const UserInfo = ({navigation,route}) => {
     <ScrollView>
      <View style={styles.container}>
 
-     <View style={styles.evaluatrlogo}>
+     {/* <View style={styles.evaluatrlogo}>
      <TouchableOpacity onPress={navigation.goBack}>
                     <View style={{ width: 30, height: 30,flex:1,alignItems:"center",justifyContent:"center" }}>
                     {selectedLanguage === "en-US"?<Image source={require("../assets/BackPress.png")}></Image>:<Image style={{marginTop:7,marginLeft:20}} source={require("../assets/BackPressAr.png")}></Image>}
@@ -153,18 +131,18 @@ const UserInfo = ({navigation,route}) => {
                 <View style ={{flex:1,justifyContent:"center",alignItems:"center"}}>
       <Image style = {{width: 75, height: 26}}source={require("../assets/evaluatrlogoGreen.png")} /> 
       </View>
-      </View> 
-      <View style={styles.screenbar}>
+      </View>  */}
+      {/* <View style={styles.screenbar}>
      <Text style={styles.topTabSelected}>{t(`profileDetails`)}</Text>
      <Text style={styles.topTab}>{t(`storeDetails`)}</Text>
      
-      </View> 
-      <View style={styles.screenbarab}>
+      </View>  */}
+      {/* <View style={styles.screenbarab}>
       <Image style={{marginTop: -18,width:screenWidth*0.41}} source={require("../assets/greenBar.png")} />
       <Image style={{marginTop: -18, width:screenWidth*0.41,marginLeft: 30}} source={require("../assets/silverBar.png")} />
-     </View>
+     </View> */}
       <View style={styles.signin}>
-        <Text numberOfLines={2} style={styles.tellUsHeading}>{t('tellUs')}</Text>
+        <Text numberOfLines={2} style={styles.tellUsHeading}>{t('userDetails')}</Text>
         </View>
         
        <SafeAreaView style={styles.wrapper}>
@@ -174,19 +152,19 @@ const UserInfo = ({navigation,route}) => {
         placeholderTextColor="#000000" 
 
         theme={{colors: {primary: '#028E46'}}}
-        placeholder={t(`fName`)}
+        placeholder={t(`userName`)}
         onChangeText={newname => setFname(newname)}
         defaultValue={Fname}
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         theme={{colors: {primary: '#028E46'}}}
         placeholder={t(`lName`)}
         placeholderTextColor="#000000" 
         onChangeText={newlast => setLname(newlast)}
         defaultValue={Lname}
-      />
-      {Type === "phone" &&<TextInput
+      /> */}
+      {/* {Type === "phone" &&<TextInput
         style={styles.input}
         placeholderTextColor="#000000" 
         theme={{colors: {primary: '#028E46'}}}
@@ -194,7 +172,7 @@ const UserInfo = ({navigation,route}) => {
         onChangeText={newmail => setEmail(newmail)}
         defaultValue={Email}
       />}
-      { Email =="" || reg.test(Email) === false  && <Text style={{ color:"#F9774D" ,fontSize: 14,alignSelf:"center",textAlign:"center"  }}>{t('emailErr')}</Text>}
+      { Email =="" || reg.test(Email) === false  && <Text style={{ color:"#F9774D" ,fontSize: 14,alignSelf:"center",textAlign:"center"  }}>{t('emailErr')}</Text>} */}
       
       
       <TextInput
@@ -216,7 +194,7 @@ const UserInfo = ({navigation,route}) => {
         onChangeText={newconfrm => setConfirm(newconfrm)}
         defaultValue={Confirm}
       />
-      {Type === "email" &&
+      {/* {Type === "email" &&
       <PhoneInput
       containerStyle={styles.phoneContainer}
       defaultCode={"SA"}
@@ -227,7 +205,7 @@ const UserInfo = ({navigation,route}) => {
       defaultValue={Phone}
       textInputStyle={styles.inputStyle}
       textInputProps={{ returnKeyType : "done" }}
-    />}
+    />} */}
     {!(Confirm == Password || Confirm =="") && <Text style={{ color:"#F9774D" ,fontSize: 14,alignSelf:"center",textAlign:"center" }}>{t('confirmErr')}</Text>}
      
       <View style={{zIndex:-1,height:screenHeight*0.35,alignSelf:"flex-end"}}>
@@ -236,18 +214,31 @@ const UserInfo = ({navigation,route}) => {
        
        {showLoader ? <View style={styles.loaderView}><Loader /></View>: 
       <View style={{position:"absolute",bottom:50,alignSelf:"center",alignItems:"center",justifyContent:"center"}}>
-       {( Fname == "" || Lname == "" || Email == ""  || Password == "" || Confirm == "" || Phone == "")?
+       {( Fname == "" || Password == "" || Confirm == "" )?
         <TouchableOpacity
            style={styles.buttonsilver}
            
          >
-          <Text style={styles.silverButtonText}>{t(`step2`)}</Text>
+          <Text style={styles.silverButtonText}>{t(`signUpAsStudent`)}</Text>
          </TouchableOpacity>:
          <TouchableOpacity
            style={styles.buttongreen}
            onPress={Userinfo}
          >
-           <Text style={styles.buttonText}>{t(`step2`)}</Text>
+           <Text style={styles.buttonText}>{t(`signUpAsStudent`)}</Text>
+         </TouchableOpacity>}
+         {( Fname == "" || Password == "" || Confirm == "" )?
+        <TouchableOpacity
+           style={styles.buttonsilver}
+           
+         >
+          <Text style={styles.silverButtonText}>{t(`signUpAsTeacher`)}</Text>
+         </TouchableOpacity>:
+         <TouchableOpacity
+           style={styles.buttongreen}
+           onPress={Userinfo}
+         >
+           <Text style={styles.buttonText}>{t(`signUpAsTeacher`)}</Text>
          </TouchableOpacity>}
          </View>}
       
@@ -276,11 +267,7 @@ return (
       component={UserInfo}
       options={{ headerShown: false }}
     />
-    
-    <Stack.Screen
-      name="user location"
-      component={UserLoc} options={{ headerShown: false }}
-    />
+    <Stack.Screen name="navbar" component={BottomNavigation}  />
   </Stack.Navigator>
 );
 }
@@ -400,23 +387,25 @@ buttonsilver: {
   
   marginLeft : 40,
   marginRight : 40,
-  height: screenHeight*0.064,
+  height: screenHeight*0.067,
   width: screenWidth*0.9,
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "#D3DCEC",
   borderRadius: Sizes.Size_8,
+  marginVertical: Sizes.Size_6
 },
 buttongreen: {
   
   marginLeft : 40,
   marginRight : 40,
-  height: 48,
+  height: 54,
   width: 343,
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "#028E46",
   borderRadius: Sizes.Size_8,
+  marginVertical: Sizes.Size_6
   
 },
 silverButtonText: {
