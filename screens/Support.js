@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react';
-import { View, ScrollView, RefreshControl, StyleSheet, Dimensions,TouchableOpacity,Linking,FlatList,Image, Text, Alert} from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, StyleSheet, Dimensions,TouchableOpacity,Linking,FlatList,Image, Text, Alert} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Search } from './Search';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header/Header';
 import { SearchProvider } from '../SearchContext';
-import { Button, Divider } from 'react-native-paper';
 
 
 import { Fonts,Colors,Sizes } from '../utils/Constants';
@@ -13,7 +12,7 @@ import { Fonts,Colors,Sizes } from '../utils/Constants';
 import Notifications from './Notifications';
 
 import { RootContext } from '../RootContext';
-import Metrics, { getWidth, getHeight } from '../utils/metrics';
+import { getWidth, getHeight } from '../utils/metrics';
 import { colors } from 'react-native-elements';
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get("screen").height;
@@ -45,13 +44,13 @@ export const SupportPage = ({ navigation }) => {
         {
             'title': t(`callUs`),
             'image': require("../assets/phoneSupportIcon.png"),
-            'number': '+966115101666',
+            'number': '+919815228816',
             'route': 'phone'
         },
         {
             'title': t(`whatsapp`),
             'image': require("../assets/whatsappSupportIcon.png"),
-            'number': '+966507840047',
+            'number': '+919815228816',
             'route': 'whatsapp'
         }
     ]
@@ -85,48 +84,12 @@ export const SupportPage = ({ navigation }) => {
 
         )                  
     }
-    const topFilterData = [
-        {
-          'name': t(`myOrders`),
-          'image': require('../assets/myOrdersImage.png'),
-          'navigate': "Orders"
-        },
-        {
-          'name': t(`priceDrop`),
-          'image': require('../assets/priceDropImage.png'),
-          'navigate': "PriceDrop"
-        },
-        {
-          'name': t(`myItems`),
-          'image': require('../assets/myItemsImage.png'),
-          'navigate': "MyItems"
-        }
-      ]
-    
-      const renderTopFilters = ({item} ) => {
-        return ( 
-          <TouchableOpacity onPress={() => navigation.navigate(item.navigate)}>
-            <View style={styles.topFilterButton}>
-              <Image source={item.image} style={{alignSelf: 'center'}}></Image>
-              <Text style={styles.topFilterName}>{item.name}</Text>
-            </View>
-          </TouchableOpacity>
-        )
-      }
+
     
     return  (
      
           
             <View style={{flex : 1,  backgroundColor: colors.white}}>
-                 <View style={{backgroundColor: Colors.white, marginBottom: getHeight(15), flexDirection: 'row', alignSelf: 'center'}}>
-                            <Divider />
-                            <FlatList
-                                data={topFilterData}
-                                horizontal={true}
-                                contentContainerStyle={{width: Metrics.screenWidth, justifyContent: 'space-evenly'}}
-                                renderItem={renderTopFilters}>
-                                </FlatList>
-                            </View>
                            
                 < Text style={{color: colors.black, fontFamily: Fonts.POPPINS_BOLD, fontSize: Sizes.Size_22, lineHeight: getHeight(30), marginLeft: getHeight(10)}}>{t(`support`)}</Text>
                 <FlatList

@@ -60,18 +60,6 @@ const More = ({ navigation }) => {
           image:require('../assets/MyProfile.png')
         },
         {
-            title:t(`orders`),
-            image:require('../assets/MyOrders.png')
-        },
-        {
-            title:t('stores'),
-            image:require('../assets/MyStores.png')
-        },
-        {
-            title:t('myItems'),
-            image:require('../assets/MyItems.png')
-        },
-        {
             title:t('language'),
             image:require('../assets/Language.png')
         },
@@ -82,10 +70,6 @@ const More = ({ navigation }) => {
         {
             title:t('FAQ'),
             image:require('../assets/FaqLogo.png')
-        },
-        {
-            title:t('notification'),
-            image:require('../assets/NotificationLogo.png')
         },
         
       ];
@@ -147,27 +131,11 @@ const More = ({ navigation }) => {
                           
                         <TouchableOpacity onPress={() => { 
                            
-                          if(item.title === t(`orders`)){
-                            navigation.navigate("Orders")
-                           }
-                           else if(item.title === t('language')){
+                          if(item.title === t('language')){
                             navigation.navigate("PreferencesScreen")
-                           }
-                           else if(item.title === t('myItems')){
-                            navigation.navigate("My Items")
                            }
                            else if(item.title === t('FAQ')){
                             navigation.navigate("FAQ")
-                           }
-                           else if(item.title === t(`orders`)){
-                            navigation.navigate("Orders")
-                           }
-                           else if(item.title === t(`notification`)){
-                            navigation.navigate("Notifications")
-                           }
-                           else if(item.title === t(`stores`)){
-                            setShowTabNav("none")
-                            navigation.navigate("My stores",{custId:Profile?.id})
                            }
                            else if(item.title === t(`profile`)){
                             navigation.navigate("My Profile",{
@@ -202,46 +170,6 @@ const More = ({ navigation }) => {
                              <Text style={{color:"#F9774D",fontSize:12,fontWeight:"600",fontFamily:Fonts.POPPINS_REGULAR,alignSelf:"center"}}>{t('view')}</Text>
                         </TouchableOpacity>
                      </View> }
-                     <View style={{height:screenHeight * 0.22,marginTop:10}}>
-                        <FlatList
-                        horizontal
-                         data={orders.slice(-5)}
-                            initialNumToRender={6}
-                            renderItem={({item}) => 
-                                (
-                                state = item?.attributes?.itemStates[0],
-                                
-                                <View style={{marginRight:10,marginLeft:10,borderRadius:10,borderWidth:2,borderColor:"#D4D9DE",padding:16,width:screenWidth*0.86}}>
-                                <View style={{flexDirection:"row",width:screenWidth * 0.89}}>
-                                <Text style={{ flex: 0.5, fontFamily: Fonts.POPPINS_SEMIBOLD, textAlign: 'left', color: '#000000', fontSize: Sizes.Size_16, lineHeight: 19 }}>Order # {item.id}</Text>
-                                <Text style={{ flex: 0.4, fontFamily: Fonts.POPPINS_SEMIBOLD, textAlign: 'right', color: '#000000',fontSize: Sizes.Size_14, lineHeight: Sizes.Size_16}}>{(item?.attributes?.currencyIsoCode)} {formatPrice(item?.attributes?.totals?.grandTotal)}</Text>
-                               </View>
-                               <View style={{flexDirection: 'row'}}>
-                               <Text style={{ flex: 0.5, fontFamily: Fonts.POPPINS_REGULAR, textAlign: 'left', color: '#000000', opacity: 0.6, fontSize: 12, lineHeight: 15 }}>{t(`placedOn`)} {moment(item?.attributes?.createdAt).format('LL')}</Text>
-                               <Text style={{ flex: 0.5, fontFamily: Fonts.POPPINS_REGULAR, textAlign: 'right', color: '#000000', opacity: 0.6, fontSize: 11, lineHeight: 13, letterSpacing: -0.24 }}>{t(`inclVat`)}</Text>
-                             </View>
-                             <View style = {{  paddingVertical: 6, paddingHorizontal: 8, 
-                                backgroundColor: state == "placed"? "#BAEBB1" : state == "cancellation requested"? "#FFC8CE" : "#FFEAB8", 
-                                borderRadius: 38, alignSelf: 'flex-start', marginVertical: 8, flexDirection: 'row', justifyContent: 'space-around' }}>
-                                    <Text style={{ color: "#0B1932", fontFamily: Fonts.POPPINS_REGULAR, fontSize: Sizes.Size_12, marginLeft: 0, lineHeight: Sizes.Size_16, fontWeight: '500', letterSpacing: 0}}>{state}</Text>
-                            </View>
-                            <TouchableOpacity style={{borderRadius:8,borderWidth:1,borderColor:"#B0BDD4",height:screenHeight*0.045,width:screenWidth * 0.4,marginTop:15,justifyContent:"center"}} onPress={()=>{navigation.navigate('Order Detail', {
-                            orderId: item.id
-                                })}}>
-                              <Text style={{alignSelf:"center",fontSize:12,fontFamily:Fonts.POPPINS_REGULAR,fontWeight:"600",color:"#028E46"}}>{t('viewDetails')}</Text>
- 
-                            </TouchableOpacity>
-                             </View>
-                            )
-                            }
-                            />  
-                    </View> 
-                    {/* <View style={{height:30,width:343,flexDirection:"row",marginBottom:5,marginLeft:10,marginTop:10}}>
-                        <Text style={{fontFamily:Fonts.POPPINS_BOLD,flex:0.9,color:"#0B1932",fontSize:22}}>{t('buy')}</Text>
-                        <TouchableOpacity style={{justifyContent:"center",alignSelf:"center",backgroundColor:"rgba(249, 119, 77, 0.12);",width:74,height:22,borderRadius:8,marginLeft:120}} onPress={()=>{}}>
-                            <Text style={{color:"#F9774D",fontSize:12,fontWeight:"600",fontFamily:Fonts.POPPINS_REGULAR,alignSelf:"center"}}>{t('view')}</Text>
-                        </TouchableOpacity>
-                     </View>  */}
                      </ScrollView> 
             <TouchableOpacity style={styles.signout}  onPress={() => {
                 AsyncStorage.setItem("TOKEN","");
